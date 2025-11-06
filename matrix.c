@@ -1,82 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "matrix.h"
 
-Matrix *create_matrix(int rows, int cols){
+// Allocate memory for a matrix of given dimensions
+Matrix *allocate_matrix(int rows, int cols) {
     Matrix *mat = malloc(sizeof(Matrix));
-    
-    if(mat == NULL){
-        fprintf(stderr, "Memory allocation failed for matrix struct \n");
+    if (mat == NULL) {
+        fprintf(stderr, "Memory allocation failed for matrix struct\n");
         exit(1);
     }
 
     mat->rows = rows;
     mat->cols = cols;
 
-    mat->data = (int **)malloc(rows * sizeof(int *));
-
-     if (mat->data == NULL) {
-        fprintf(stderr, "Memory allocation failed for matrix data \n");
+    mat->data = malloc(rows * sizeof(int *));
+    if (mat->data == NULL) {
+        fprintf(stderr, "Memory allocation failed for matrix data pointers\n");
         free(mat);
         exit(1);
     }
-    
-    for(int i=0;i<rows; i++){
-        mat->data[i] =malloc(cols * sizeof(int));
-        
-        if (mat->data[i] == NULL) {
-            int k = 0;
-            fprintf(stderr, "Memory allocation failed for row %d.\n", i);
 
-            /* free previously allocated rows before exiting */
-            for (;k < i; k++) free(mat->data[k]);
+    for (int i = 0; i < rows; i++) {
+        mat->data[i] = malloc(cols * sizeof(int));
+        if (mat->data[i] == NULL) {
+            fprintf(stderr, "Memory allocation failed for row %d\n", i);
+            for (int k = 0; k < i; k++) free(mat->data[k]);
             free(mat->data);
             free(mat);
             exit(1);
-        }       
-        for(int j=0;j<cols;j++){
+        }
+    }
+
+    return mat;
+}
+
+// Create a matrix by reading elements from user input
+Matrix *create_matrix(int rows, int cols) {
+    Matrix *mat = allocate_matrix(rows, cols);
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
             printf("Enter element [%d][%d]: ", i, j);
             scanf("%d", &(mat->data[i][j]));
         }
     }
+
     return mat;
 }
 
-Matrix *matrix_addition(Matrix *A, Matrix *B){   
-    if(A->rows != B->rows || A->cols != B->cols){
-        fprintf(stderr, "Matrix dimensions do not match for addition \n");
+// Add two matrices and return the result
+Matrix *matrix_addition(Matrix *A, Matrix *B) {
+    if (A->rows != B->rows || A->cols != B->cols) {
+        fprintf(stderr, "Matrix dimensions do not match for addition\n");
         exit(1);
     }
 
-    Matrix *result=malloc(sizeof(Matrix));
-    if(result==NULL){
-        fprintf(stderr, "Memory allocation failed for matrix struct \n");
-        exit(1);
-    }
+    Matrix *result = allocate_matrix(A->rows, A->cols);
 
-    result->rows = A->rows;
-    result->cols = A->cols;
-
-    result->data = malloc(result->rows * sizeof(int *));
-    if (result->data == NULL) {
-        fprintf(stderr, "Memory allocation failed for data pointers\n");
-        free(result);
-        exit(1);
-    }
-
-    for(int i=0;i<A->rows;i++){
-        
-        result->data[i] =malloc(A->cols * sizeof(int));
-        if (result->data[i] == NULL) {
-            int k = 0;
-            fprintf(stderr, "Memory allocation failed for row %d.\n", i);
-            /* free previously allocated rows before exiting */
-            for (;k < i; k++) free(result->data[k]);
-            free(result->data);
-            free(result);
-            exit(1);
-        }   
-        for(int j=0;j<A->cols;j++){
-            result->data[i][j]= A->data[i][j] + B->data[i][j];
+    for (int i = 0; i < A->rows; i++) {
+        for (int j = 0; j < A->cols; j++) {
+            result->data[i][j] = A->data[i][j] + B->data[i][j];
         }
     }
+
     return result;
+}
+
+// Free all memory used by a matrix
+void free_matrix(Matrix *mat) {
+    if (mat == NULL) return;
+    for (int i = 0; i < mat->rows; i++)
+        free(mat->data[i]);
+    free(mat->data);
+    free(mat);
 }

@@ -1,14 +1,22 @@
 #ifndef MATRIX_H
 #define MATRIX_H
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Matrix {
+
+typedef struct {
     int rows;
     int cols;
     int **data;
-}Matrix;
+} Matrix;
 
+// Allocates an empty matrix (no user input)
+Matrix *allocate_matrix(int rows, int cols);
+
+// Creates a matrix and fills it with user input
 Matrix *create_matrix(int rows, int cols);
 
+// Adds two matrices
 Matrix *matrix_addition(Matrix *A, Matrix *B);
-#endif /* MATRIX_H */
+
+// Frees all memory used by a matrix
+void free_matrix(Matrix *mat);
+
+#endif
