@@ -16,6 +16,11 @@ Matrix *create_matrix(int rows, int cols);
 // Adds two matrices
 Matrix *matrix_addition(Matrix *A, Matrix *B);
 
+Matrix *matrix_multiplication(Matrix *A, Matrix *B);
+
+// Print a matrix to the console
+void print_matrix(Matrix *mat);
+
 // Frees all memory used by a matrix
 void free_matrix(Matrix *mat);
 
