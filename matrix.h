@@ -4,7 +4,7 @@
 typedef struct {
     int rows;
     int cols;
-    int **data;
+    double **data;
 } Matrix;
 
 // Allocates an empty matrix (no user input)
@@ -16,8 +16,15 @@ Matrix *create_matrix(int rows, int cols);
 // Adds two matrices
 Matrix *matrix_addition(Matrix *A, Matrix *B);
 
+// Subtracts two matrices
+Matrix *matrix_subtruction(Matrix *A, Matrix *B);
+
+// Multiplies two matrices
 Matrix *matrix_multiplication(Matrix *A, Matrix *B);
 
+// Multiplies a matrix by a scalar
+Matrix *matrix_scalar_multiplication(Matrix *A, double scalar);
+ 
 // Print a matrix to the console
 void print_matrix(Matrix *mat);
 

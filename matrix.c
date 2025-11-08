@@ -15,7 +15,7 @@ Matrix *allocate_matrix(int rows, int cols)
     mat->rows = rows;
     mat->cols = cols;
 
-    mat->data = malloc(rows * sizeof(int *));
+    mat->data = malloc(rows * sizeof(double *));
     if (mat->data == NULL) 
     {
         fprintf(stderr, "Memory allocation failed for matrix data pointers\n");
@@ -48,7 +48,7 @@ Matrix *create_matrix(int rows, int cols) {
         for (int j = 0; j < cols; j++) 
         {
             printf("Enter element [%d][%d]: ", i, j);
-            scanf("%d", &(mat->data[i][j]));
+            scanf("%le", &(mat->data[i][j]));
         }
     }
 
@@ -71,6 +71,27 @@ Matrix *matrix_addition(Matrix *A, Matrix *B)
         for (int j = 0; j < A->cols; j++) 
         {
             result->data[i][j] = A->data[i][j] + B->data[i][j];
+        }
+    }
+
+    return result;
+}
+
+// Subtract two matrices and return the result
+Matrix *matrix_subtruction(Matrix *A, Matrix *B)
+{ 
+    if (A->rows != B->rows || A->cols != B->cols)
+    {
+        fprintf(stderr, "Matrix dimensions do not match for subtraction\n");
+        exit(1);
+    }
+
+    Matrix *result = allocate_matrix(A->rows, A->cols);
+    for (int i = 0; i < A->rows; i++)
+    {
+        for (int j = 0; j < A->cols; j++) 
+        {
+            result->data[i][j] = A->data[i][j] - B->data[i][j];
         }
     }
 
@@ -104,6 +125,19 @@ Matrix *matrix_multiplication(Matrix *A, Matrix *B)
     return result;
 }
 
+// Multiply a matrix by a scalar and return the result
+Matrix *matrix_scalar_multiplication(Matrix *A, double scalar)
+{
+    Matrix *result = allocate_matrix(A->rows,A->cols);
+    for(int i=0;i<A->cols;i++)
+    {
+        for(int j=0;j<A->rows;j++)
+        {
+            result->data[i][j]= A->data[i][j] * scalar;
+        }
+    }
+}
+
 // Print a matrix to the console
 void print_matrix(Matrix *mat) 
 {
@@ -111,7 +145,7 @@ void print_matrix(Matrix *mat)
     {
         for (int j = 0; j < mat->cols; j++) 
         {
-            printf("%d ", mat->data[i][j]);
+            printf("%f ", mat->data[i][j]);
         }
         printf("\n");
     }
