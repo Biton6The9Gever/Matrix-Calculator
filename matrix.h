@@ -41,6 +41,9 @@ Matrix *copy_matrix(Matrix *mat);
 // Transposes a matrix
 Matrix *matrix_transpose(Matrix *A);
 
+// Creates a matrix with random values between min and max
+Matrix *matrix_random(int rows, int cols, double min, double max);
+
 // Calculates the determinant of a matrix
 double matrix_determinant(Matrix *mat);
 

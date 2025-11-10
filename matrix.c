@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include "matrix.h"
 
 
@@ -166,6 +167,28 @@ Matrix *matrix_transpose(Matrix *A)
         }
     }
     return transposedMatrix;
+}
+
+// Create a matrix with random values between min and max
+Matrix *matrix_random(int rows, int cols, double min, double max)
+{
+    Matrix *randomMatrix = allocate_matrix(rows, cols);
+
+    for(int i=0; i < rows; i++)
+    {
+        for(int j=0; j < cols; j++)
+        {
+            double scale = rand() / (double)RAND_MAX;
+            double value = min + scale * (max - min);
+
+            // Round to 2 decimal places
+            value = round(value * 100.0) / 100.0;
+
+            randomMatrix->data[i][j] = value;
+        }
+    }
+
+    return randomMatrix;
 }
 
 // Calculate the determinant of a matrix
