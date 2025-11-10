@@ -1,11 +1,21 @@
 #ifndef MATRIX_H
 #define MATRIX_H
+   
+#define MAX(a,b) ((a) > (b) ? (a) : (b)) 
+#define SWAP(a, b) \
+    do { \
+        typeof(a) _tmp = (a); \
+        (a) = (b); \
+        (b) = _tmp; \
+    } while (0)
 
 typedef struct {
     int rows;
     int cols;
     double **data;
 } Matrix;
+
+
 
 // Allocates an empty matrix (no user input)
 Matrix *allocate_matrix(int rows, int cols);
@@ -27,6 +37,9 @@ Matrix *matrix_scalar_multiplication(Matrix *A, double scalar);
 
 // Creates a copy of a matrix
 Matrix *copy_matrix(Matrix *mat);
+
+// Transposes a matrix
+Matrix *matrix_transpose(Matrix *A);
 
 // Calculates the determinant of a matrix
 double matrix_determinant(Matrix *mat);

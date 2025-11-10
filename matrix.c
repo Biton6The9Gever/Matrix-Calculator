@@ -3,7 +3,6 @@
 #include <math.h>
 #include "matrix.h"
 
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
 
 // Allocate memory for a matrix of given dimensions
 Matrix *allocate_matrix(int rows, int cols) 
@@ -153,6 +152,20 @@ Matrix *copy_matrix(Matrix *mat)
         }
     }
     return copy;
+}
+
+// Transpose a matrix
+Matrix *matrix_transpose(Matrix *A)
+{
+    Matrix *transposedMatrix = allocate_matrix(A->cols, A->rows);
+    for(int i=0 ; i < A->rows; i++)
+    {
+        for(int j=0; j < A->cols; j++)
+        {
+            transposedMatrix->data[j][i] = A->data[i][j];
+        }
+    }
+    return transposedMatrix;
 }
 
 // Calculate the determinant of a matrix
